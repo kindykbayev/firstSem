@@ -1,0 +1,90 @@
+#include "pch.h"
+#include <conio.h>
+const int SIZE = 500;
+const int SIZE2 = 100;
+using namespace std;
+ 
+int func1(char *arr)
+{
+    char ch;
+    int i = 0;
+    do
+    {
+        ch = _getch();
+        if ((ch >= 'a') && (ch <= 'z') || (ch == ' '))
+        {
+            _putch(ch);
+            if (((ch == ' ') && (arr[i - 1] != ' ')) || (ch != ' '))
+            {
+                arr[i] = ch;
+                i++;
+            }
+        }
+        else if ((ch == '\b') && (i > 0))
+        {
+            _putch(ch);
+            _putch(' ');
+            _putch(ch);
+            i--;
+        }
+ 
+ 
+    } while (ch != '.');
+    return i;
+}
+void func2(char *arr, char **arr2, int count)
+{
+    int i = 0, j = 0;
+    for (int x = 0; x <= count; x++)
+    {
+        if (arr[x] == ' ')
+        {
+            i++;
+            j = 0;
+        }
+        else
+        {
+            arr2[i][j] = arr[x];
+            j++;
+        }
+ 
+    }
+    _putch('\n');
+    int *a = new int[i];
+    int t1 = 0, t2 = 0;
+    for (int x = 0; x < i; x++) a[x] = SIZE;
+    for (int x = 0; x < i; x++)
+    {
+        for (int y = 0; y < count; y++)
+        {    
+            if ((arr2[x][y] != arr2[i][y])&&(arr2[x][y]!=' ')&&(arr2[i][y] != ' ') t1++;
+            if ((y>0)&&(arr2[x][y]!=' ')&&(arr2[x][y-1] >= arr2[x][y])) t2++;
+            }
+        if ((t1 == 0) || (t2 > 0)) a[x] = 0;
+        t1 = 0;
+        t2 = 0;
+    }
+    int p = 0;
+    do
+    {
+        for (int y = 0; y < count; y++)
+            if ((a[p] == SIZE) && (arr2[p][y] != ' ')) _putch(arr2[p][y]);
+        if (a[p] == SIZE) _putch(' ');
+        p++;
+    } while (p < i);
+}
+ 
+void main()
+{
+    char * arr = new char[SIZE];
+    int count;
+    count = func1(arr);
+ 
+    char ** arr2 = new char*[SIZE2];
+    for (int i = 0; i < SIZE2; i++)
+        arr2[i] = new char[SIZE];
+    for (int i = 0; i < SIZE2; i++)
+        for (int j = 0; j < SIZE; j++)
+            arr2[i][j] = ' ';
+    func2(arr, arr2, count);
+}
